@@ -3661,6 +3661,10 @@ void Player::SwapItem(uint16 src, uint16 dst)
             UpdateTitansGrip();
             if (IsBankPos(src))
                 ItemAddedQuestCheck(pSrcItem->GetEntry(), pSrcItem->GetCount());
+
+            // Equipped item was moved into empty inventory -> OnUnequip
+            if(IsEquipmentPos(src))
+                sScriptMgr->OnUnequip(this, pSrcItem, srcbag, srcslot, false);
         }
         else if (IsBankPos(dst))
         {
@@ -3676,6 +3680,10 @@ void Player::SwapItem(uint16 src, uint16 dst)
             BankItem(dest, pSrcItem, true);
             UpdateTitansGrip();
             ItemRemovedQuestCheck(pSrcItem->GetEntry(), pSrcItem->GetCount());
+            
+            // Equipped item was moved into empty inventory -> OnUnequip
+            if(IsEquipmentPos(src))
+                sScriptMgr->OnUnequip(this, pSrcItem, srcbag, srcslot, false);
         }
         else if (IsEquipmentPos(dst))
         {
